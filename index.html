@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Prototypo Light</title>
+	</head>
+	<body>
+		<div style="font-size: 10em; font-family: sans-serif;">
+			Hello.
+		</div>
+	</body>
+
+	<canvas id="canvas" style="display:none;"></canvas>
+	<script src="src/prototypo.js"></script>
+	<script src="src/prototypo-canvas.js"></script>
+	<script src="src/lib.js"></script>
+
+	<!-- On génère ici une fonte et on la modifie -->
+	<script type="text/javascript">
+
+		// On crée une fonte, ici 'prototypo' + un numéro aléatoire
+		var fontRandomName = 'prototypo' + Math.random().toFixed(3);
+
+		// On choisit son template, au choix :
+		//
+		// 'stan'
+		// 'venus'
+		// 'elzevir'
+		// 'fell'
+		//
+		// Attention! tous les templates n'ont pas tous
+		// les paramètres de disponible
+		// à vérifier dans les fichiers 'doc/controls-*****.coffee'
+		// Sauf sur le stan, il y a en moyenne 25 paramètres par template
+		Ptypo.createFont(fontRandomName, 'stan').then( function() {
+			function download(number, font) {
+				return function() {
+					if (!number) {
+						return;
+					}
+					else {
+						var values = Ptypo.getFontValues(font);
+
+						// Ici on change le paramètre 'thickness' de
+						// la fonte 'prototypo'
+						// Avec une valeur minimum de 10
+						// Avec une valeur maximum de 200
+						// Pour les valeurs mini et maxi, bien regarder ce
+						// qu'il se fait dans les
+						// fichiers 'doc/controls-*****.coffee'
+						values.thickness = 10 + Math.random() * 200;
+						// Un autre paramètre, la chasse (width en anglais)
+						values.width = 0.5 + Math.random() * 8;
+
+						// On télécharge la fonte avec le bon nom et
+						// les bons paramètres
+						Ptypo.download(
+							font,
+							download(number - 1, font),
+							{
+								family: fontRandomName,
+								style: '_' + number
+							},
+							values
+						);
+					}
+				}
+			};
+
+			// On choisit le nombre de fontes que l'on souhaite
+			download(5, fontRandomName)();
+		});
+	</script>
+</html>

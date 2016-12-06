@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/foundation-6/css/foundation-flex.css"></link>
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/default.min.css">
+		<link rel="stylesheet" href="example/one.css"></link>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+		<script>
+			hljs.initHighlightingOnLoad();
+		</script>
+	</head>
+	<body class="row">
+		<div class="columns medium-12">
+			<h1>Documentation pour le Mirage fest</h1>
+			<h2>Créer une typo</h2>
+			<p>
+				La seule chose a faire pour créer un typographie paramètrer est d'appeler la fonction <code>Ptypo.createFont( nomTypo, template );</code>.
+			</p>
+
+			<p><code>template</code> peut prendre les valeurs suivantes: 'venus', 'fell', 'elzevir'</p>
+			<p style="color: red;">
+				'elzevir' est encore en développement et donc incomplet.
+			</p>
+
+
+			<p>
+				<br>Une fois la fonction appelée, une nouvelle <code>font-family</code> est créée portant le nom <code>nomTypo</code>. Pour utiliser cette nouvelle font-family il suffit dans un fichier css de créer une classe ou un id utilisant cette <code>font-family</code>.
+			</p>
+			<h3>Example</h3>
+			<h4>index.html</h4>
+			<pre><code style="display:block">
+&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;link rel="stylesheet" href="fest.css"&gt;&lt;/link&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="typo"&gt;
+			Hello world!
+		&lt;/div&gt;
+		&lt;script src="prototypo.js"&gt;&lt;/script&gt;
+		&lt;script src="prototypo-canvas.js"&gt;&lt;/script&gt;
+		&lt;script src="src/lib.js"&gt;&lt;/script&gt;
+		&lt;script src="mirage.js"&gt;&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+			</code></pre>
+			<h4>mirage.js</h4>
+			<pre><code class="js">
+Ptypo.createFont('typo');
+			</code></pre>
+			<h4>fest.css</h4>
+			<pre><code class="css">
+#typo {
+	font-family: typo;
+}
+			</code></pre>
+			<h4>Result</h4>
+			<div id="typo">
+				Hello world!
+			</div>
+			<h2>Changer une typo</h2>
+			<p>Pour changer une typo il suffit d'appeler la fonction <code>Ptypo.changeParam( value, paramName, nomTypo);</code></p>
+
+			<p>
+				Pour paramétrer par défaut les paramètres d'une typo on peut ajouter:
+				<pre>
+					<code>
+Ptypo.createFont(nomTypo, template).then( function() {
+	Ptypo.changeParam( value, paramName, nomTypo);
+});
+					</code>
+				</pre>
+			</p>
+
+			<p><code>paramName</code> peut prendre les valeurs suivantes</p>
+			<table>
+				<thead>
+					<th>Nom du paramètre</th>
+					<th>Changement sur la typo</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>thickness</td>
+						<td>Change la graisse de la typo</td>
+					</tr>
+					<tr>
+						<td>width</td>
+						<td>Change la largeur des caractères</td>
+					</tr>
+					<tr>
+						<td>xHeight</td>
+						<td>Change la hauteur des caractères</td>
+					</tr>
+					<tr>
+						<td>slant</td>
+						<td>Change l'inclinaison des caractères</td>
+					</tr>
+					<tr>
+						<td>etc.</td>
+						<td>Une vingtaine de paramètres sont accessibles. Parlons-en ensemble!</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>Example</h3>
+			<h4>index.html</h4>
+			<pre><code class="html">
+&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;link rel="stylesheet" href="fest.css"&gt;&lt;/link&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="typo2"&gt;
+			Hello world!
+		&lt;/div&gt;
+		&lt;div id="plus"&gt;+&lt;/div&gt;
+		&lt;div id="minus"&gt;-&lt;/div&gt;
+		&lt;script src="prototypo.js"&gt;&lt;/script&gt;
+		&lt;script src="prototypo-canvas.js"&gt;&lt;/script&gt;
+		&lt;script src="src/lib.js"&gt;&lt;/script&gt;
+		&lt;script src="mirage.js"&gt;&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+			</code></pre>
+			<h4>mirage.js</h4>
+			<pre><code class="js">
+Ptypo.createFont('typo2');
+
+document.getElementById('plus').addEventListener('click', function() {
+	var newParam = Ptypo.getParam('thickness', 'typo2') + 10;
+	Ptypo.changeParam(newParam, 'thickness', 'typo2');
+});
+
+document.getElementById('minus').addEventListener('click', function() {
+	var newParam = Ptypo.getParam('thickness', 'typo2') - 10;
+	Ptypo.changeParam(newParam, 'thickness', 'typo2');
+});
+			</code></pre>
+			<h4>fest.css</h4>
+			<pre><code class="css">
+#typo {
+	font-family: typo2;
+}
+			</code></pre>
+			<h4>Result</h4>
+			<div id="typo2">
+				Hello world!
+			</div>
+			<button id="plus" class="button">+</button>
+			<button id="minus" class="button">-</button>
+		</div>
+		<canvas id="canvas" style="display:none;"></canvas>
+		<script src="prototypo.js"></script>
+		<script src="prototypo-canvas.js"></script>
+		<script src="src/lib.js"></script>
+		<script src="example/one.js"></script>
+	</body>
+</html>
